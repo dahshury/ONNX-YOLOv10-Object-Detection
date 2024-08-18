@@ -1,7 +1,7 @@
 import cv2
 from cap_from_youtube import cap_from_youtube
 
-from yolov8 import YOLOv8
+from yolov10 import YOLOv10
 
 # # Initialize video
 # cap = cv2.VideoCapture("input.mp4")
@@ -15,7 +15,7 @@ cap.set(cv2.CAP_PROP_POS_FRAMES, start_time * cap.get(cv2.CAP_PROP_FPS))
 
 # Initialize YOLOv7 model
 model_path = "models/yolov8m.onnx"
-yolov8_detector = YOLOv8(model_path, conf_thres=0.5, iou_thres=0.5)
+yolov10_detector = YOLOv10(model_path, conf_thres=0.5, iou_thres=0.5)
 
 cv2.namedWindow("Detected Objects", cv2.WINDOW_NORMAL)
 while cap.isOpened():
@@ -34,9 +34,9 @@ while cap.isOpened():
         continue
 
     # Update object localizer
-    boxes, scores, class_ids = yolov8_detector(frame)
+    boxes, scores, class_ids = yolov10_detector(frame)
 
-    combined_img = yolov8_detector.draw_detections(frame)
+    combined_img = yolov10_detector.draw_detections(frame)
     cv2.imshow("Detected Objects", combined_img)
     # out.write(combined_img)
 

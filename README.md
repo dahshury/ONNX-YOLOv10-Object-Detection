@@ -1,4 +1,4 @@
-![! ONNX YOLOv8 Object Detection](https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection/raw/main/doc/img/detected_objects.jpg)
+![! ONNX YOLOv10 Object Detection](https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection/raw/main/doc/img/detected_objects.jpg)
 *Original image: [https://www.flickr.com/photos/nicolelee/19041780](https://www.flickr.com/photos/nicolelee/19041780)*
 
 # Important
@@ -11,8 +11,8 @@
 
 # Installation
 ```shell
-git clone https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection.git
-cd ONNX-YOLOv8-Object-Detection
+git clone https://github.com/dahshury/ONNX-YOLOv10-Object-Detection
+cd ONNX-YOLOv10-Object-Detection
 pip install -r requirements.txt
 ```
 ### ONNX Runtime
@@ -29,15 +29,13 @@ You can convert the model using the following code after installing ultralitics 
 ```python
 from ultralytics import YOLO
 
-model = YOLO("yolov8m.pt") 
+model = YOLO("yolov10m.pt") 
 model.export(format="onnx", imgsz=[480,640])
 ```
 
-[//]: # (The original models were converted to different formats &#40;including .onnx&#41; by [PINTO0309]&#40;https://github.com/PINTO0309&#41;. Download the models from **[his repository]**&#40;https://github.com/PINTO0309/PINTO_model_zoo/tree/main/345_YOLOv8&#41;. For that, you can either run the `download_single_batch.sh` or copy the download link inside that script in your browser to manually download the file. Then, extract and copy the downloaded onnx models &#40;for example `yolov8m_480x640.onnx`&#41; to your **[models directory]&#40;https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection/tree/main/models&#41;**, and fix the file name in the python scripts accordingly.)
-
 # Original YOLOv8 model
-The original YOLOv8 model can be found in this repository: [YOLOv8 Repository](https://github.com/ultralytics/ultralytics)
-- The License of the models is GPL-3.0 license: [License](https://github.com/ultralytics/ultralytics/blob/main/LICENSE)
+The original YOLOv10 model can be found in this repository: [YOLOv10 Repository](https://github.com/THU-MIG/yolov10)
+- The License of the models is AGPL-3.0 license: [License](https://github.com/THU-MIG/yolov10/blob/main/LICENSE)
 
 # Examples
 
@@ -56,11 +54,12 @@ The original YOLOv8 model can be found in this repository: [YOLOv8 Repository](h
  python video_object_detection.py
  ```
 
- ![!YOLOv8 detection video](https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection/raw/main/doc/img/yolov8_video.gif)
+ ![!YOLOv10 detection video](https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection/raw/main/doc/img/yolov8_video.gif)
 
   *Original video: [https://youtu.be/Snyg0RqpVxY](https://youtu.be/Snyg0RqpVxY)*
 
 # References:
+* YOLOv10 model: [https://github.com/THU-MIG/yolov10](https://github.com/THU-MIG/yolov10)
 * YOLOv8 model: [https://github.com/ultralytics/ultralytics](https://github.com/ultralytics/ultralytics)
 * YOLOv5 model: [https://github.com/ultralytics/yolov5](https://github.com/ultralytics/yolov5)
 * YOLOv6 model: [https://github.com/meituan/YOLOv6](https://github.com/meituan/YOLOv6)

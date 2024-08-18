@@ -3,10 +3,10 @@ import cv2
 import numpy as np
 import onnxruntime
 
-from yolov8.utils import xywh2xyxy, draw_detections, multiclass_nms
+from yolov10.utils import xywh2xyxy, draw_detections, multiclass_nms
 
 
-class YOLOv8:
+class YOLOv10:
 
     def __init__(self, path, conf_thres=0.7, iou_thres=0.5):
         self.conf_threshold = conf_thres
@@ -60,27 +60,23 @@ class YOLOv8:
         return outputs
 
     def process_output(self, output):
-        predictions = np.squeeze(output[0]).T
+        predictions = output[0][0]
+        
+        # Filter predictions with low confidence scores
+        scores = predictions[:,4]
+        predictions = predictions[scores > self.conf_threshold]
+        
 
-        # Filter out object confidence scores below threshold
-        scores = np.max(predictions[:, 4:], axis=1)
-        predictions = predictions[scores > self.conf_threshold, :]
-        scores = scores[scores > self.conf_threshold]
-
-        if len(scores) == 0:
+        if len(predictions) == 0:
             return [], [], []
 
         # Get the class with the highest confidence
-        class_ids = np.argmax(predictions[:, 4:], axis=1)
+        class_ids = predictions[:, 5]
 
         # Get bounding boxes for each object
         boxes = self.extract_boxes(predictions)
 
-        # Apply non-maxima suppression to suppress weak, overlapping bounding boxes
-        # indices = nms(boxes, scores, self.iou_threshold)
-        indices = multiclass_nms(boxes, scores, class_ids, self.iou_threshold)
-
-        return boxes[indices], scores[indices], class_ids[indices]
+        return boxes, scores, class_ids
 
     def extract_boxes(self, predictions):
         # Extract boxes from predictions
@@ -88,9 +84,6 @@ class YOLOv8:
 
         # Scale boxes to original image dimensions
         boxes = self.rescale_boxes(boxes)
-
-        # Convert boxes to xyxy format
-        boxes = xywh2xyxy(boxes)
 
         return boxes
 
@@ -123,19 +116,19 @@ class YOLOv8:
 if __name__ == '__main__':
     from imread_from_url import imread_from_url
 
-    model_path = "../models/yolov8m.onnx"
+    model_path = "../models/YOLOv10m.onnx"
 
-    # Initialize YOLOv8 object detector
-    yolov8_detector = YOLOv8(model_path, conf_thres=0.3, iou_thres=0.5)
+    # Initialize YOLOv10 object detector
+    YOLOv10_detector = YOLOv10(model_path, conf_thres=0.3, iou_thres=0.5)
 
     img_url = "https://live.staticflickr.com/13/19041780_d6fd803de0_3k.jpg"
     img = imread_from_url(img_url)
 
     # Detect Objects
-    yolov8_detector(img)
+    YOLOv10_detector(img)
 
     # Draw detections
-    combined_img = yolov8_detector.draw_detections(img)
+    combined_img = YOLOv10_detector.draw_detections(img)
     cv2.namedWindow("Output", cv2.WINDOW_NORMAL)
     cv2.imshow("Output", combined_img)
     cv2.waitKey(0)

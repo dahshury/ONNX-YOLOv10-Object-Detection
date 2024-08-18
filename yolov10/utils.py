@@ -94,11 +94,11 @@ def draw_detections(image, boxes, scores, class_ids, mask_alpha=0.3):
 
     # Draw bounding boxes and labels of detections
     for class_id, box, score in zip(class_ids, boxes, scores):
-        color = colors[class_id]
+        color = colors[int(class_id)]
 
         draw_box(det_img, box, color)
 
-        label = class_names[class_id]
+        label = class_names[int(class_id)]
         caption = f'{label} {int(score * 100)}%'
         draw_text(det_img, caption, box, color, font_size, text_thickness)
 
@@ -128,7 +128,7 @@ def draw_masks(image: np.ndarray, boxes: np.ndarray, classes: np.ndarray, mask_a
 
     # Draw bounding boxes and labels of detections
     for box, class_id in zip(boxes, classes):
-        color = colors[class_id]
+        color = colors[int(class_id)]
 
         x1, y1, x2, y2 = box.astype(int)
 
